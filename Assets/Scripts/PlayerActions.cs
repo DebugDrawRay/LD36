@@ -2,8 +2,6 @@
 
 public class PlayerActions : PlayerActionSet
 {
-    public PlayerAction Jump;
-
     public PlayerAction MoveForward;
     public PlayerAction MoveBackward;
     public PlayerAction StrafeLeft;
@@ -18,7 +16,12 @@ public class PlayerActions : PlayerActionSet
 
     public PlayerTwoAxisAction Look;
 
+    public PlayerAction LeanLeft;
+    public PlayerAction LeanRight;
+
     public PlayerAction UseTool;
+
+    public PlayerAction ClearSequence;
 
     public PlayerAction ToolInputOne;
     public PlayerAction ToolInputTwo;
@@ -31,8 +34,6 @@ public class PlayerActions : PlayerActionSet
 
     public PlayerActions()
     {
-        Jump = CreatePlayerAction("Jump");
-
         MoveForward = CreatePlayerAction("Move Forward");
         MoveBackward = CreatePlayerAction("Move Backward");
         StrafeLeft = CreatePlayerAction("Strafe Left");
@@ -47,7 +48,12 @@ public class PlayerActions : PlayerActionSet
 
         Look = CreateTwoAxisPlayerAction(LookLeft, LookRight, LookDown, LookUp);
 
+        LeanLeft = CreatePlayerAction("Lean Left");
+        LeanRight = CreatePlayerAction("Lean Right");
+
         UseTool = CreatePlayerAction("Use Tool");
+
+        ClearSequence = CreatePlayerAction("Clear Sequence");
 
         ToolInputOne = CreatePlayerAction("Tool Input One");
         ToolInputTwo = CreatePlayerAction("Tool Input Two");
@@ -63,8 +69,6 @@ public class PlayerActions : PlayerActionSet
     {
         PlayerActions newActions = new PlayerActions();
 
-        newActions.Jump.AddDefaultBinding(Key.Space);
-
         newActions.MoveForward.AddDefaultBinding(Key.W);
         newActions.MoveBackward.AddDefaultBinding(Key.S);
         newActions.StrafeLeft.AddDefaultBinding(Key.A);
@@ -75,7 +79,12 @@ public class PlayerActions : PlayerActionSet
         newActions.LookRight.AddDefaultBinding(Mouse.PositiveX);
         newActions.LookLeft.AddDefaultBinding(Mouse.NegativeX);
 
+        newActions.LeanLeft.AddDefaultBinding(Key.Q);
+        newActions.LeanRight.AddDefaultBinding(Key.E);
+
         newActions.UseTool.AddDefaultBinding(Mouse.LeftButton);
+
+        newActions.ClearSequence.AddDefaultBinding(Key.Space);
 
         newActions.ToolInputOne.AddDefaultBinding(Key.Key1);
         newActions.ToolInputTwo.AddDefaultBinding(Key.Key2);

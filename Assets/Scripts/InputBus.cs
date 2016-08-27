@@ -21,6 +21,9 @@ public class InputState
     public bool action6;
     public bool action7;
     public bool action8;
+    public bool action9;
+    public bool action10;
+    public bool action11;
 
     public enum Actions
     {
@@ -32,8 +35,12 @@ public class InputState
         Action5,
         Action6,
         Action7,
-        Action8
+        Action8,
+        Action9,
+        Action10,
+        Action11
     }
+
     public void AssignAction(Actions action, bool active)
     {
         switch(action)
@@ -65,6 +72,15 @@ public class InputState
             case Actions.Action8:
                 action8 = active;
                 break;
+            case Actions.Action9:
+                action9 = active;
+                break;
+            case Actions.Action10:
+                action10 = active;
+                break;
+            case Actions.Action11:
+                action11 = active;
+                break;
         }
     }
 
@@ -90,6 +106,12 @@ public class InputState
                 return action7;
             case Actions.Action8:
                 return action8;
+            case Actions.Action9:
+                return action9;
+            case Actions.Action10:
+                return action10;
+            case Actions.Action11:
+                return action11;
             default:
                 return false;
         }
