@@ -16,6 +16,7 @@ GameObject:
   - 114: {fileID: 11434428}
   - 114: {fileID: 11445616}
   - 114: {fileID: 11448838}
+  - 114: {fileID: 11465994}
   m_Layer: 11
   m_Name: Devourer
   m_TagString: Untagged
@@ -229,7 +230,7 @@ MonoBehaviour:
   waypointDelay: 2
   seekLength: 5
   attackRange: 10
-  attackDelay: 0
+  attackDelay: 5
   attackLength: 0
   attackCooldown: 5
   currentBehaviour: 0
@@ -298,7 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4eea65afa76b944a108367c49f3f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assignedAction: 0
+  waypointMovement: 0
+  directMovement: 1
   speed: 5
   acceleration: 0.25
   target: {fileID: 0}
@@ -335,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f8a17fe5210de4e89d53432fb058eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  senseRange: 10
+  senseRange: 50
   head: {fileID: 423102}
   sightMask:
     serializedVersion: 2
@@ -358,6 +360,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+--- !u!114 &11465994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c674303c37731f648981790d72fc6a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assignedAction: 2
+  strength: 50
+  damage: 0
 --- !u!114 &11478978
 MonoBehaviour:
   m_ObjectHideFlags: 1
