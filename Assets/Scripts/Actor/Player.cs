@@ -5,10 +5,17 @@ public class Player : Actor
 {
     private PlayerActions input;
 
+    public static Player instance;
     protected override void Initialize()
     {
         base.Initialize();
         input = PlayerActions.BindAll();
+
+        if(instance != null)
+        {
+            Destroy(gameObject);
+        }
+        instance = this;
     }
 
     void Update()

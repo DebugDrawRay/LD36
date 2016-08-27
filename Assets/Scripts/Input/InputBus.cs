@@ -12,6 +12,8 @@ public class InputState
     public Vector2 primaryDirection;
     public Vector2 secondaryDirection;
 
+    public Transform target;
+
     public bool action0;
     public bool action1;
     public bool action2;

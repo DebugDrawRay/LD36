@@ -16,6 +16,9 @@ public class Actor : MonoBehaviour
     public float health;
     protected float currentHealth;
 
+    public float soundEmission;
+    public float visualStealth;
+
     //Input
     protected InputBus bus;
     protected InputState actions;
