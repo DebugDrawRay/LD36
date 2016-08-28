@@ -130,10 +130,13 @@ public class PatrolingEnemy : Actor
 
     void Patrolling()
     {
-        actions.AssignAction(InputState.Actions.Action0, true);
-        if (Vector3.Distance(transform.position, selectedWaypoint.position) <= waypointRange)
+        if (selectedWaypoint != null)
         {
-            StartCoroutine(NextWaypoint(waypointDelay));
+            actions.AssignAction(InputState.Actions.Action0, true);
+            if (Vector3.Distance(transform.position, selectedWaypoint.position) <= waypointRange)
+            {
+                StartCoroutine(NextWaypoint(waypointDelay));
+            }
         }
 
         if(currentSeekTime > 0)
