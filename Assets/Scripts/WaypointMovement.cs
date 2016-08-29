@@ -5,6 +5,7 @@ public class WaypointMovement : Action
 {
     public InputState.Actions waypointMovement;
     public InputState.Actions directMovement;
+    public InputState.Actions rotateOnly;
     [Header("Properties")]
     public float speed;
     [Range(0,1)]
@@ -48,8 +49,9 @@ public class WaypointMovement : Action
 
                 Vector3 move = transform.forward * speed;
 
+                move.y = rigid.velocity.y;
                 rigid.velocity = Vector3.Lerp(rigid.velocity, move, acceleration);
-
+                
                 if(Vector3.Distance(transform.position, targetPoint) <= nodeRange)
                 {
                     currentNode++;
@@ -69,7 +71,15 @@ public class WaypointMovement : Action
 
             Vector3 move = transform.forward * speed;
 
+            move.y = rigid.velocity.y;
             rigid.velocity = Vector3.Lerp(rigid.velocity, move, acceleration);
+        }
+        else if(actions.CheckAction(rotateOnly))
+        {
+            Vector3 direction = actions.target.position - transform.position;
+            Quaternion rot = Quaternion.LookRotation(direction.normalized, transform.up);
+            rot = Quaternion.Euler(0, rot.eulerAngles.y, 0);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, accuracy);
         }
         else
         {

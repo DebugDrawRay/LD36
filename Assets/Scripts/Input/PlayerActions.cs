@@ -53,7 +53,7 @@ public class PlayerActions : PlayerActionSet
 
         UseTool = CreatePlayerAction("Use Tool");
 
-        ClearSequence = CreatePlayerAction("Clear Sequence");
+        ClearSequence = CreatePlayerAction("Clear/Confirm Sequence");
 
         ToolInputOne = CreatePlayerAction("Tool Input One");
         ToolInputTwo = CreatePlayerAction("Tool Input Two");

@@ -19,14 +19,18 @@ public class Senses : MonoBehaviour
 
     public void EvaluateSight()
     {
+        Debug.Log("In Sight Cone");
         Vector3 dir = Player.instance.transform.position - transform.position;
         Ray sightRay = new Ray(head.position, dir);
+        Debug.DrawRay(sightRay.origin, sightRay.direction);
         RaycastHit hit;
         if (Physics.Raycast(sightRay, out hit, senseRange, sightMask))
         {
+            Debug.Log(hit.collider.name);
             Player player = hit.collider.GetComponent<Player>();
             if (player && player.visualStealth >= visiblityThreshold)
             {
+                Debug.Log("InSight");
                 OnDetected.Invoke();
             }
         }

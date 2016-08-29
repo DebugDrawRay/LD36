@@ -18,8 +18,8 @@ TagManager:
   - IgnoreProjectile
   - Enemy
   - Vision
-  - 
-  - 
+  - Ground
+  - Obstacle
   - 
   - 
   - 

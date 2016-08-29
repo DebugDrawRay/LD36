@@ -91,26 +91,23 @@ public class AncientTool : Action
     {
         for(int i = 0; i < toolInputs.Count; i++)
         {
-            if(actions.CheckAction(toolInputs[i]))
+            if(currentSequence.Count < sequenceLength && actions.CheckAction(toolInputs[i]))
             {
                 currentSequence.Add((Input)i);
+                HudController.instance.DisplayCharacter((Input)i);
                 Debug.Log((Input)i);
             }
         }
 
         if(actions.CheckAction(InputState.Actions.Action0))
         {
-            ActivateTool();
+            CheckSequence();
         }
+
         if (actions.CheckAction(InputState.Actions.Action9))
         {
             currentSequence = new List<Input>();
         }
-    }
-
-    void Update()
-    {
-        CheckSequence();
     }
 
     void ActivateTool()
@@ -174,16 +171,21 @@ public class AncientTool : Action
                 {
                     selectedFunction = availableFunctions[i];
                     currentSequence = new List<Input>();
-                    Debug.Log("Vaild " + selectedFunction.function);
                     valid = true;
                 }
             }
-            if(!valid)
+            if(valid)
+            {
+                Debug.Log("Vaild " + selectedFunction.function);
+                ActivateTool();
+            }
+            else
             {
                 Debug.Log("Invalid");
                 GetComponent<Player>().health -= 0;
                 currentSequence = new List<Input>();
             }
+            HudController.instance.ConfirmCharacters(valid);
         }
     }
 

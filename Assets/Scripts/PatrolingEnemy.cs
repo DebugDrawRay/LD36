@@ -8,16 +8,20 @@ public class PatrolingEnemy : Actor
     public List<Transform> waypoints;
     public float waypointRange;
     public float waypointDelay;
+    public InputState.Actions patrolAction;
 
     [Header("Seeking")]
     public float seekLength;
     private float currentSeekTime;
+    public InputState.Actions seekAction;
 
     [Header("Attacking")]
     public float attackRange;
     public float attackDelay;
     public float attackLength;
     public float attackCooldown;
+    public InputState.Actions attackAction;
+    public InputState.Actions trackingAction;
 
     private float currentCooldown;
 
@@ -39,7 +43,6 @@ public class PatrolingEnemy : Actor
     protected override void Initialize()
     {
         base.Initialize();
-        ResetWaypoints();
     }
 
     //Components
@@ -57,6 +60,8 @@ public class PatrolingEnemy : Actor
                 bus.Actions(actions);
                 break;
             case State.Inactive:
+                ResetWaypoints();
+                currentState = State.Active;
                 break;
         }
     }
@@ -86,33 +91,36 @@ public class PatrolingEnemy : Actor
     IEnumerator Attack(float delay, float length)
     {
         currentBehaviour = Behaviour.None;
+        actions.AssignAction(trackingAction, true);
         yield return new WaitForSeconds(delay);
-        actions.AssignAction(InputState.Actions.Action2, true);
+        actions.AssignAction(attackAction, true);
         yield return new WaitForSeconds(length);
         yield return new WaitForEndOfFrame();
-        actions.AssignAction(InputState.Actions.Action2, false);
+        actions.AssignAction(attackAction, false);
+        actions.AssignAction(trackingAction, false);
         currentBehaviour = Behaviour.Seek;
         currentCooldown = attackCooldown;
     }
 
     void Seeking()
     {
+        actions.AssignAction(patrolAction, false);
+        actions.AssignAction(attackAction, false);
         currentSeekTime -= Time.deltaTime;
 
         if (currentSeekTime > 0)
         {
-            actions.AssignAction(InputState.Actions.Action1, true);
+            actions.AssignAction(seekAction, true);
             actions.target = Player.instance.transform;
 
             if (Vector3.Distance(transform.position, actions.target.position) <= attackRange && currentCooldown <= 0)
             {
-                actions.AssignAction(InputState.Actions.Action1, false);
+                actions.AssignAction(seekAction, false);
                 currentBehaviour = Behaviour.Attack;
             }
         }
         else
         {
-            actions.AssignAction(InputState.Actions.Action1, false);
             ResetWaypoints();
             currentBehaviour = Behaviour.Patrol;
         }
@@ -130,25 +138,30 @@ public class PatrolingEnemy : Actor
 
     void Patrolling()
     {
-        if (selectedWaypoint != null)
-        {
-            actions.AssignAction(InputState.Actions.Action0, true);
-            if (Vector3.Distance(transform.position, selectedWaypoint.position) <= waypointRange)
-            {
-                StartCoroutine(NextWaypoint(waypointDelay));
-            }
-        }
+        actions.AssignAction(seekAction, false);
+        actions.AssignAction(attackAction, false);
 
-        if(currentSeekTime > 0)
+        if (currentSeekTime > 0)
         {
-            actions.AssignAction(InputState.Actions.Action0, false);
             currentBehaviour = Behaviour.Seek;
+        }
+        else
+        {
+            if (selectedWaypoint != null)
+            {
+                actions.AssignAction(patrolAction, true);
+                if (Vector3.Distance(transform.position, selectedWaypoint.position) <= waypointRange)
+                {
+                    StartCoroutine(NextWaypoint(waypointDelay));
+                }
+            }
         }
     }
 
     IEnumerator NextWaypoint(float delay)
     {
         selectedWaypoint = null;
+        actions.AssignAction(patrolAction, false);
         yield return new WaitForSeconds(delay);
         currentWaypoint++;
         if(currentWaypoint >= waypoints.Count)
