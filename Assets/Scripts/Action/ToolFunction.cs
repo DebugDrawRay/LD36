@@ -5,6 +5,7 @@ public class ToolFunction : ScriptableObject
 {
     public AncientTool.Input[] sequence;
     public AncientTool.Function function;
+    public float cooldown;
     public bool CheckSequenceMatch(List<AncientTool.Input> check)
     {
         if (check.Count != AncientTool.sequenceLength)

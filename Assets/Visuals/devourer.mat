@@ -125,11 +125,11 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: 0.5
+        second: 0.825
       data:
         first:
           name: _Shininess
-        second: 0.078125
+        second: 0.1
       data:
         first:
           name: _WindQuality
@@ -251,3 +251,7 @@ Material:
         first:
           name: _HueVariation
         second: {r: 1, g: 0.5, b: 0, a: 0.1}
+      data:
+        first:
+          name: _Emission
+        second: {r: 0, g: 0, b: 0, a: 0}

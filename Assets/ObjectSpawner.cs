@@ -6,10 +6,31 @@ public class ObjectSpawner : MonoBehaviour
 {
     public GameObject toSpawn;
     public List<Transform> waypoints;
-	void Awake ()
+    public bool onAwake = true;
+    public bool alignRotation = true;
+    public bool setParent = true;
+    void Awake()
     {
-        GameObject obj = (GameObject)Instantiate(toSpawn, transform.position, transform.rotation);
-        obj.transform.SetParent(transform);
-        obj.GetComponent<PatrolingEnemy>().waypoints = waypoints;
+        if (onAwake)
+        {
+            Spawn();
+        }
+    }
+
+    public void Spawn()
+    { 
+        GameObject obj = (GameObject)Instantiate(toSpawn, transform.position, Quaternion.identity);
+        if(alignRotation)
+        {
+            obj.transform.rotation = transform.rotation;
+        }
+        if (setParent)
+        {
+            obj.transform.SetParent(transform);
+        }
+        if (obj.GetComponent<PatrolingEnemy>())
+        {
+            obj.GetComponent<PatrolingEnemy>().waypoints = waypoints;
+        }
 	}
 }

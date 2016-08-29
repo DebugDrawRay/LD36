@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PatrolingEnemy : Actor
 {
@@ -12,7 +13,7 @@ public class PatrolingEnemy : Actor
 
     [Header("Seeking")]
     public float seekLength;
-    private float currentSeekTime;
+    public float currentSeekTime;
     public InputState.Actions seekAction;
 
     [Header("Attacking")]
@@ -60,6 +61,8 @@ public class PatrolingEnemy : Actor
                 bus.Actions(actions);
                 break;
             case State.Inactive:
+                break;
+            case State.Setup:
                 ResetWaypoints();
                 currentState = State.Active;
                 break;
@@ -172,8 +175,27 @@ public class PatrolingEnemy : Actor
         actions.target = selectedWaypoint;
     }
 
+    protected override void Hit()
+    {
+        base.Hit();
+        Detection();
+    }
     public void Detection()
     {
         currentSeekTime = seekLength;
+    }
+
+    protected override void CheckStatus()
+    {
+        base.CheckStatus();
+        if(currentHealth <= 0)
+        {
+            currentState = State.Inactive;
+            Sequence death = DOTween.Sequence();
+            transform.DOShakePosition(1, 1, 50, 100);
+            death.Append(transform.DOScale(transform.localScale * 1.5f, .5f));
+            death.Append(transform.DOScale(Vector3.zero, .5f));
+            death.OnComplete(() => Destroy(gameObject));
+        }
     }
 }

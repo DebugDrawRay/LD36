@@ -27,7 +27,9 @@ public class AncientTool : Action
     public ToolFunction selectedFunction;
 
     public const int sequenceLength = 3;
-    
+
+    private float maxCooldown;
+    private float currentCooldown;
     //Tool functions and sequencing
     public enum Input
     {
@@ -87,6 +89,15 @@ public class AncientTool : Action
         inputInit = true;
     }
 
+    void Update()
+    {
+        if(currentCooldown > 0)
+        {
+            currentCooldown -= Time.deltaTime;
+            HudController.instance.UpdateCooldown(currentCooldown / maxCooldown);
+        }
+    }
+
     protected override void Execute(InputState actions)
     {
         for(int i = 0; i < toolInputs.Count; i++)
@@ -116,6 +127,8 @@ public class AncientTool : Action
         {
             Debug.Log(selectedFunction.function);
             CreateObject(selectedFunction.function);
+            maxCooldown = selectedFunction.cooldown;
+            currentCooldown = selectedFunction.cooldown;
             selectedFunction = null;
         }
     }
@@ -151,18 +164,18 @@ public class AncientTool : Action
                 break;
             case Function.Hammer:
                 held = (GameObject)Instantiate(hammer, emissionSource.position, emissionSource.rotation);
-                held.transform.SetParent(transform);
+                held.transform.SetParent(emissionSource.transform);
                 break;
             case Function.Shield:
                 held = (GameObject)Instantiate(shield, emissionSource.position, emissionSource.rotation);
-                held.transform.SetParent(transform);
+                held.transform.SetParent(emissionSource.transform);
                 break;
         }
     }
 
     void CheckSequence()
     {
-        if (currentSequence.Count >= sequenceLength)
+        if (currentSequence.Count >= sequenceLength && currentCooldown <= 0)
         {
             bool valid = false;
             for (int i = 0; i < availableFunctions.Length; i++)

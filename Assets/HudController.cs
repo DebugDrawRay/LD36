@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class HudController : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class HudController : MonoBehaviour
     private int displayedCharacters;
     public Image sight;
     public Image sound;
+    public Image cooldownBar;
+    public Image healthBar;
 
     public static HudController instance;
 
@@ -41,29 +44,47 @@ public class HudController : MonoBehaviour
     {
         if(valid)
         {
-
+            for (int i = 0; i < currentCharacters.Count; i++)
+            {
+                GameObject character = currentCharacters[i];
+                Tween color = character.GetComponent<Image>().DOColor(Color.green, .1f).SetLoops(4, LoopType.Yoyo);
+                color.OnComplete(() => { Destroy(character); currentCharacters.Remove(character); });
+            }
         }
         else
         {
-
+            for (int i = 0; i < currentCharacters.Count; i++)
+            {
+                GameObject character = currentCharacters[i];
+                Tween color = character.transform.DOShakePosition(.25f, 15, 100, 100);
+                color.OnComplete(() => { Destroy(character); currentCharacters.Remove(character); });
+            }
         }
-
-        for(int i = 0; i < currentCharacters.Count; i++)
-        {
-            Destroy(currentCharacters[i]);
-        }
-        currentCharacters = new List<GameObject>();
         displayedCharacters = 0;
     }
 
     public void UpdateVisual(float amount)
     {
-
+        Color currentColor = new Color(amount, amount, amount, 1);
+        sight.color = currentColor;
     }
 
     public void UpdateSound(float amount)
     {
-
+        Color currentColor = new Color(amount, amount, amount, 1);
+        sound.color = currentColor;
     }
 
+    public void UpdateCooldown(float amount)
+    {
+        cooldownBar.fillAmount = amount;
+    }
+
+    public void UpdateHealth(float amount)
+    {
+        Color originalColor = healthBar.color;
+        Tween color = healthBar.DOColor(Color.white, 1).SetEase(Ease.OutElastic);
+        color.OnComplete(() => healthBar.color = originalColor);
+        DOTween.To(() => healthBar.fillAmount, x => healthBar.fillAmount = x, amount, 1);
+    }
 }
