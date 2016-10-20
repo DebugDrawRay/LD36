@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     public ActorCollision OnActorCollision;
     public UnityEvent OnCollision;
+    public UnityEvent OnTimedDestroy;
 
     private Rigidbody rigid;
 
@@ -21,6 +22,11 @@ public class Projectile : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         rigid.velocity = transform.forward * speed;
+    }
+
+    void OnDestroy()
+    {
+        OnTimedDestroy.Invoke();
     }
 
     void Update()

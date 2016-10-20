@@ -25,7 +25,7 @@ public class Senses : MonoBehaviour
         if (Physics.Raycast(sightRay, out hit, senseRange, sightMask))
         {
             Player player = hit.collider.GetComponent<Player>();
-            if (player && player.visualStealth >= visiblityThreshold)
+            if (player && player.currentLight >= visiblityThreshold)
             {
                 OnDetected.Invoke();
             }

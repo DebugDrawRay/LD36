@@ -18,11 +18,11 @@ TagManager:
   - IgnoreProjectile
   - Enemy
   - Vision
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Obstacle
+  - Shield
+  - Gas
+  - Detection
   - 
   - 
   - 

@@ -1,11 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class Player : Actor
 {
     private PlayerActions input;
 
     public static Player instance;
+
+    [Header("Cam Shake")]
+    public Camera mainCam;
+    public float length;
+    public float strength;
+    public int vibrato;
+    public float randomness;
+
+    private Tween currentTween;
     protected override void Initialize()
     {
         base.Initialize();
@@ -18,6 +28,16 @@ public class Player : Actor
         instance = this;
     }
 
+    protected override void Hit()
+    {
+        base.Hit();
+        HudController.instance.UpdateHealth(currentHealth / health);
+        if (currentTween == null)
+        {
+            currentTween = mainCam.transform.DOShakePosition(length, strength, vibrato, randomness);
+            currentTween.OnComplete(() => currentTween = null);
+        }
+    }
     void Update()
     {
         RunStates();

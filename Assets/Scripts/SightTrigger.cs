@@ -8,9 +8,6 @@ public class SightTrigger : MonoBehaviour
 
     void OnTriggerStay(Collider hit)
     {
-        if(hit.GetComponent<Player>())
-        {
-            OnSight.Invoke();
-        }
+        OnSight.Invoke();
     }
 }

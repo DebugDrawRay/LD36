@@ -9,7 +9,8 @@ public class Actor : MonoBehaviour
     public enum State
     {
         Active,
-        Inactive
+        Inactive,
+        Setup
     }
 
     [Header("Status")]
@@ -17,7 +18,9 @@ public class Actor : MonoBehaviour
     protected float currentHealth;
 
     public float soundEmission;
-    public float visualStealth;
+
+    protected float maxLight = 50;
+    public float currentLight;
 
     //Input
     protected InputBus bus;
@@ -29,6 +32,10 @@ public class Actor : MonoBehaviour
         Initialize();
     }
 
+    protected virtual void Hit()
+    {
+        CheckStatus();
+    }
     protected virtual void Initialize()
     {
         bus = GetComponent<InputBus>();
@@ -38,24 +45,26 @@ public class Actor : MonoBehaviour
     public void Damage(float amount)
     {
         currentHealth -= amount;
+        Hit();
     }
 
     public void ChangeStatus(State newState, float time)
     {
         StartCoroutine(TimedStatusChange(newState, time));
+        Hit();
     }
 
     public void DamageOverTime(float duration, int ticks, float amount)
     {
         StartCoroutine(TakeDamageOverTime(duration, ticks, amount));
+        Hit();
     }
 
     IEnumerator TimedStatusChange(State newState, float time)
     {
-        oldState = currentState;
         currentState = newState;
         yield return new WaitForSeconds(time);
-        currentState = oldState;
+        currentState = State.Active;
     }
 
     IEnumerator TakeDamageOverTime(float duration, int ticks, float amount)
@@ -65,7 +74,9 @@ public class Actor : MonoBehaviour
         {
             currentTicks++;
             currentHealth -= amount;
-            yield return new WaitForSeconds(duration / ticks);
+            yield return new WaitForSeconds(duration);
         }
     }
+
+    protected virtual void CheckStatus() { }
 }

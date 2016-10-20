@@ -13,3 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sequence: 000000000000000000000000
   function: 0
+  cooldown: 0.5
